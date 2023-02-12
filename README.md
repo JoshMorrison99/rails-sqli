@@ -1,24 +1,22 @@
-# README
+# Ruby on Rails SQL Injection
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The ORM in Ruby on Rails is called Active Record. It provides a convenient and efficient way to interact with databases using an object-oriented paradigm, allowing you to work with data stored in your database as objects, rather than writing raw SQL and it automatically escapes any user-supplied data to prevent SQL injection attacks.
+```ruby
+class SqliController < ApplicationController
+    def index
+        @result = params[:query]
+        @users = User.find_by(username: @result)
+    end
+end
+```
+<br>
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+The Rails application is vulnerable if the developer uses a raw query like so:
+```ruby
+class SqliController < ApplicationController
+    def index
+        @result = params[:query]
+        @users = User.connection.execute("SELECT * FROM users WHERE username='" + @result + "'")
+    end
+end
+```
