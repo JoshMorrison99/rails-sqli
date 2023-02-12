@@ -1,0 +1,11 @@
+<h1>SQL Injection in Ruby on Rails</h1>
+<%= form_with method: :get do |form| %>
+    <%= form.label :query, "Search for:" %>
+    <%= form.text_field :query %>
+    <%= form.submit "Search" %>
+<% end %>
+<% if @users.present? %>
+    <%= @users %>
+<% else %>
+    <h2>User not found</h2>
+<% end %>
